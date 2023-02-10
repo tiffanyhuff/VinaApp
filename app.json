@@ -162,11 +162,11 @@
         "default": "/scratch/02875/docking/test/Enamine-PC/Enamine-PC/test_sets/test",
         "enumValues":[
           {"/scratch/02875/docking/test/Enamine-PC/Enamine-PC/test_sets/test": "test"},
-	        {"/scratch/02875/docking/test/Enamine-AC/100_sets": "Enamine-AC"},
+	        {"/scratch/02875/docking/test/Enamine-AC-compressed/1": "Enamine-AC"},
           {"/scratch/02875/docking/test/Enamine-HTSC-compressed2/1": "Enamine-HTSC"},
           {"/scratch/02875/docking/test/Enamine-PC-compressed/1": "Enamine-PC"},
           {"/scratch/02875/docking/test/ZINC-in-trials-compressed/1": "ZINC-in-trials"},
-          {"/scratch/02875/docking/test/ZINC-fragments/100_sets": "ZINC-fragments"},
+          {"/scratch/02875/docking/test/ZINC-fragments-compressed/1": "ZINC-fragments"},
 	        {"/scratch/02875/docking/test/benchmarks/ZINC-in-trials/5000_set": "ZINC-in-trials 5k"},
           {"/scratch/02875/docking/test/benchmarks/ZINC-in-trials/10000_set": "ZINC-in-trials 10k"},
           {"/scratch/02875/docking/test/benchmarks/Enamine-PC/5000_set": "PC 5k"},
