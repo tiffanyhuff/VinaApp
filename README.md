@@ -10,7 +10,7 @@ Note: Computer docking and virtual screening are inexact, but potentially very v
 To run the application, the user must submit a job using the [TACC API (TAPIS) UTRC Portal system](https://utrc.tacc.utexas.edu/). The following inputs are allowed:
 - __Protein Receptor__: The user _must_ upload a .pdb- or .pdbqt-formatted protein receptor file
 - __Grid Center__: The user _may_ specify X-Y-Z coordinates; default is x: 15.190, y: 53.903, z: 16.917
-- __Box Size__: The user _may_ specify X-Y-Z size limits; default is 20-20-20
+- __Box Size__: The user _may_ specify X-Y-Z size limits; default is 30-30-30
 - __Scoring Method__: The user _must_ specify which scoring method to use (either AutoDock Vina or AutoDock4); default is Vina. More details on the differences can be found [here](https://autodock-vina.readthedocs.io/en/latest/faq.html)
 - __Docking Type__: The user _must_ specify whether this is basic or flexible docking; default is basic
 - __Flex Residues__: If Flexible Docking is chosen, the user _must_ specify the specific flexible residues (e.g. THR315)
