@@ -82,11 +82,11 @@ if library_short in ['Enamine-PC', 'Enamine-AC', 'ZINC-in-trials']:
     expected_nodes = 1
     expected_tasks = 32
 elif library_short == 'Enamine-HTSC':
-    expected_nodes = 10
-    expected_tasks = 320
+    expected_nodes = 1
+    expected_tasks = 32
 elif library_short == 'ZINC-fragments':
-    expected_nodes = 5
-    expected_tasks = 160
+    expected_nodes = 1
+    expected_tasks = 32
 cpus = 4
 verbosity = 0 # Prints vina docking progress to stdout if set to 1 (normal) or 2 (verbose)
 poses = 1 # If set to 1, only saves the best pose/score to the output ligand .pdbqt file
@@ -150,7 +150,7 @@ def check_user_configs():
                         Expected #Nodes for {library_short}={expected_nodes}\n \
                         Expected #Tasks for {library_short}={expected_tasks}' \
                         >> error.txt"], shell=True)
-        comm.Abort()
+        # comm.Abort()
 
 
 
