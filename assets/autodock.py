@@ -142,14 +142,14 @@ def check_user_configs():
         comm.Abort()
     
     # User inputted #Nodes and #Tasks must match our internal values (specified above) exactly
-    if not (tasks == expected_tasks) or not (nodes == expected_nodes):
-        subprocess.run([f"echo 'Incorrect values for #Nodes and/or #ProcessorsPerNode.\n \
-                        Please review input guidelines before submitting a job.\n \
-                        Current #Nodes={nodes}\n \
-                        Current#Tasks={tasks}\n \
-                        Expected #Nodes for {library_short}={expected_nodes}\n \
-                        Expected #Tasks for {library_short}={expected_tasks}' \
-                        >> error.txt"], shell=True)
+   # if not (tasks == expected_tasks) or not (nodes == expected_nodes):
+    #    subprocess.run([f"echo 'Incorrect values for #Nodes and/or #ProcessorsPerNode.\n \
+    #                    Please review input guidelines before submitting a job.\n \
+    #                    Current #Nodes={nodes}\n \
+     #                   Current#Tasks={tasks}\n \
+     #                  Expected #Nodes for {library_short}={expected_nodes}\n \
+     #                   Expected #Tasks for {library_short}={expected_tasks}' \
+     #                   >> error.txt"], shell=True)
         # comm.Abort()
 
 
