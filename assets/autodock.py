@@ -8,6 +8,19 @@ from os.path import exists
 from os.path import basename # Used in the sorting function
 import argparse # To accept user inputs as command line arguments
 import time
+import logging # To output an error log
+
+#fp = open('logname.txt', 'w')
+
+logging.basicConfig(filename=logname.log,
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    datefmt='%H:%M:%S',
+                    level=logging.DEBUG)
+
+logging.info("Running Urban Planning")
+
+logger = logging.getLogger('urbanGUI')
 
 """
 Setup base MPI declarations
@@ -96,13 +109,11 @@ def check_user_configs():
     # User inputted box size must be within bounds specified below
     for size in [size_x, size_y, size_z]:
         if not (size <= 30 and size >= 1):
-           subprocess.run(["echo 'box size is outside the bounds (1-30)' \
-                           >> error.txt"], shell=True)
+           logging.error('Box size is outside the bounds (1-30)')
            comm.Abort()
     # User must input a file ending in .pdb or .pdbqt
     if not (full_receptor.endswith('.pdb') or full_receptor.endswith('.pdbqt')):
-        subprocess.run(["echo 'Please provide a .pdb or .pdbqt file' \
-                        >> error.txt"], shell=True)
+        logging.error('Please provide a .pdb or .pdbqt file.')
         comm.Abort()
           
     # User inputted grid center must be within the receptor's min/max bounds
@@ -123,34 +134,30 @@ def check_user_configs():
     if flexible == True:
         for sidechain in sidechains:
             if not sidechain in all_sidechains:
-                subprocess.run(["echo 'Please provide valid flexible sidechain \
-                                names, separated by underscores (e.g. THR315_GLU268)' \
-                                >> error.txt"], shell=True)
+                logging.error('Please provide valid flexible sidechain \
+                                names, separated by underscores \
+                                (e.g. THR315_GLU268)')
                 comm.Abort()
                   
     if not (min(xbounds)) <= center_x <= (max(xbounds)):
-        subprocess.run(["echo 'Center x coordinate is not within bounds' \
-                        >> error.txt"], shell=True)
+        logging.error('Center x coordinate is not within bounds')
         comm.Abort()
     if not (min(ybounds)) <= center_y <= (max(ybounds)):
-        subprocess.run(["echo 'Center y coordinate is not within bounds' \
-                        >> error.txt"], shell=True)
+        logging.error('Center y coordinate is not within bounds')
         comm.Abort()
     if not (min(zbounds)) <= center_z <= (max(zbounds)):
-        subprocess.run(["echo 'Center z coordinate is not within bounds' \
-                        >> error.txt"], shell=True)
+        logging.error('Center z coordinate is not within bounds')
         comm.Abort()
     
     # User inputted #Nodes and #Tasks must match our internal values (specified above) exactly
-   # if not (tasks == expected_tasks) or not (nodes == expected_nodes):
-    #    subprocess.run([f"echo 'Incorrect values for #Nodes and/or #ProcessorsPerNode.\n \
-    #                    Please review input guidelines before submitting a job.\n \
-    #                    Current #Nodes={nodes}\n \
-     #                   Current#Tasks={tasks}\n \
-     #                  Expected #Nodes for {library_short}={expected_nodes}\n \
-     #                   Expected #Tasks for {library_short}={expected_tasks}' \
-     #                   >> error.txt"], shell=True)
-        # comm.Abort()
+    if not (tasks == expected_tasks) or not (nodes == expected_nodes):
+        logging.error('Incorrect values for #Nodes and/or #ProcessorsPerNode.\n \
+                        Please review input guidelines before submitting a job.\n \
+                        Current #Nodes={nodes}\n \
+                        Current #Tasks={tasks}\n \
+                        Expected #Nodes for {library_short}={expected_nodes}\n \
+                        Expected #Tasks for {library_short}={expected_tasks}')
+        comm.Abort()
 
 
 
@@ -182,8 +189,8 @@ def prep_receptor():
         try:
             subprocess.run([f'prepare_receptor -r {receptor}.pdb'], shell=True)
         except:
-            subprocess.run([f"echo 'error on rank {rank}: error prepping receptor' \
-                            >> errors.txt"], shell=True)
+            logging.error('Error on rank {rank}: error prepping receptor')
+
             comm.Abort()
     if flexible == True:
         try:
@@ -191,8 +198,8 @@ def prep_receptor():
                 -g {receptor}.pdbqt -r {receptor}.pdbqt \
                 -s {'_'.join(sidechains)}"], shell=True)
         except:
-            subprocess.run([f"echo 'error on rank {rank}: error prepping flex \
-                            receptor >> errors.txt"], shell=True)
+            logging.error('Error on rank {rank}: error prepping flex \
+                            receptor')
             comm.Abort()
     
 
@@ -397,3 +404,4 @@ def main():
 
 
 main()
+#fp.close()
