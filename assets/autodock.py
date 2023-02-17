@@ -76,7 +76,7 @@ if DOCKING == 'rigid':
 elif DOCKING == 'flexible':
     FLEXIBLE = True
 SIDECHAINS = (args.sidechains).split('_')
-LIBRARY_SHORT = args.ligand_library.split('/')[6]
+LIBRARY_SHORT = args.ligand_library.split('/')[4]
 NUMBER_OF_OUTPUTS = args.number if args.number <= 1000 else 1000
 
 # Internal constants
