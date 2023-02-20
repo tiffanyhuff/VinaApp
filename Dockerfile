@@ -12,7 +12,7 @@ RUN apt-get install -y python3-pip \
     && pip install -U numpy vina \
     && apt-get install libuuid1
 
-# Install ADFRSuite
+# Install ADFRSuiteFrom
 RUN wget -O ADFR.tar  https://ccsb.scripps.edu/adfr/download/1038/ \
     && tar -xf ADFR.tar \
     && cd ADFRsuite_x86_64Linux_1.0 \ 
