@@ -10,7 +10,6 @@ import argparse # To accept user inputs as command line arguments
 import time
 import logging
 import shutil
-import tarfile
 
 # Initialize logging
 logging.basicConfig(level=logging.DEBUG,
@@ -81,17 +80,19 @@ NUMBER_OF_OUTPUTS = args.number if args.number <= 1000 else 1000
 
 # Internal constants
 # tasks should be nodes * 128 / cpus
+# These values were determined through internal benchmarks to allow an entire set to run
+# under 24 hours
 TASKS = int(os.environ['SLURM_NTASKS']) # What the user chose on the web portal
 NODES = int(os.environ['SLURM_NNODES']) # What the user chose on the web portal
-if LIBRARY_SHORT in ['test', 'Enamine-PC', 'ZINC-fragments', 'ZINC-in-trials']:
+if LIBRARY_SHORT in ['Test-set', 'Enamine-PC-compressed', 'ZINC-fragments-compressed', 'ZINC-in-trials-compressed']:
     EXPECTED_NODES = 1
     EXPECTED_TASKS = 32
 elif LIBRARY_SHORT == 'Enamine-HTSC':
-    EXPECTED_NODES = 1
-    EXPECTED_TASKS = 32
+    EXPECTED_NODES = 10
+    EXPECTED_TASKS = 320
 elif LIBRARY_SHORT == 'Enamine-AC':
-    EXPECTED_NODES = 1
-    EXPECTED_TASKS = 32
+    EXPECTED_NODES = 3
+    EXPECTED_TASKS = 96
 CPUS = 4
 VERBOSITY = 0 # Prints vina docking progress to stdout if set to 1 (normal) or 2 (verbose)
 POSES = 1 # If set to 1, only saves the best pose/score to the output ligand .pdbqt file
@@ -190,7 +191,7 @@ def check_user_configs():
         logging.error(f'Incorrect values for #Nodes and/or #ProcessorsPerNode.\n \
                         Please review input guidelines before submitting a job.\n \
                         Current #Nodes={NODES}.\n \
-                        Current #Tasks={TASKS}.\n \
+                        Current#Tasks={TASKS}.\n \
                         Expected #Nodes for {LIBRARY_SHORT}={EXPECTED_NODES}.\n \
                         Expected #Tasks for {LIBRARY_SHORT}={EXPECTED_TASKS}.')
         COMM.Abort()
@@ -223,7 +224,7 @@ def prep_receptor():
         try:
             subprocess.run([f'prepare_receptor -r {RECEPTOR}.pdb'], shell=True)
         except Exception as e:
-            logging.error(f"Error on rank {RANK}: error prepping receptor.")
+            logging.error(f"error on rank {RANK}: error prepping receptor")
             logging.debug(e)
             COMM.Abort()
     if FLEXIBLE == True:
@@ -232,18 +233,20 @@ def prep_receptor():
                 -g {RECEPTOR}.pdbqt -r {RECEPTOR}.pdbqt \
                 -s {'_'.join(SIDECHAINS)}"], shell=True)
         except Exception as e:
-            logging.error(f"Error on rank {RANK}: error prepping flex receptor.")
+            logging.error(f"error on rank {RANK}: error prepping flex receptor")
             logging.debug(e)
             COMM.Abort()
     
 
 def prep_ligands():
-    # Returns a list where each item is the path to a pickled and compressed 
-    #   text file containing multiple ligand strings
+    # Returns a list where each item is the path to a pickled and compressed
+    #   text file containing multiple ligand strings, ignores files that are
+    #   not in .pkl or .dat format
     ligand_paths = []
     for dirpath, _, filenames in os.walk(args.ligand_library):
         for filename in filenames:
-            ligand_paths.append(f'{dirpath}/{filename}')
+            if filename.endswith('.pkl') or filename.endswith('.dat'):
+                ligand_paths.append(f'{dirpath}/{filename}')
     return ligand_paths
 
 
@@ -341,7 +344,6 @@ def sort():
     #   (ligand, top score), then sorts by score so that highest scoring 
     #   ligands are on top; prints these sorted results are written to 
     #   sorted_scores.txt; finally cleans up the directory
-    #os.system("cat results* >> results_merged.txt")
     subprocess.run(["cat results* >> results_merged.txt"], shell=True)
     INPUTFILE = 'results_merged.txt'
     OUTPUTFILE = './output/results/sorted_scores.txt'
@@ -381,11 +383,6 @@ def isolate_output():
             lines = f.read()
             combined.write(lines)
     combined.close()
-    
-
-    #tar = tarfile.open("results.tar.gz", "w:gz")
-    #tar.add("./output/results", arcname="results")
-    #tar.close()
     
     subprocess.run([f'tar -czf results.tar.gz ./output/results'], shell=True)
 

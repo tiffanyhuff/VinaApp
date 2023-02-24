@@ -47,32 +47,14 @@
     {  
       "id": "library",
       "value": {
-        "default": "/scratch/02875/docking/test/benchmarks/ZINC-fragments/5000_set",
+        "default": "/scratch/projects/docking/Test-set-compressed",
         "enumValues":[
-          {"/scratch/02875/docking/test/Test-set-compressed": "test"},
-	        {"/scratch/02875/docking/test/Enamine-AC-compressed/1": "Enamine-AC"},
-          {"/scratch/02875/docking/test/Enamine-HTSC-compressed2/1": "Enamine-HTSC"},
-          {"/scratch/02875/docking/test/Enamine-PC-compressed/1": "Enamine-PC"},
-          {"/scratch/02875/docking/test/ZINC-in-trials-compressed/1": "ZINC-in-trials"},
-          {"/scratch/02875/docking/test/ZINC-fragments-compressed/1": "ZINC-fragments"},
-	        {"/scratch/02875/docking/test/benchmarks/ZINC-in-trials/5000_set": "ZINC-in-trials 5k"},
-          {"/scratch/02875/docking/test/benchmarks/ZINC-in-trials/10000_set": "ZINC-in-trials 10k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-PC/5000_set": "PC 5k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-PC/10000_set": "PC 10k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-AC/5000_set": "AC 5k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-AC/10000_set": "AC 10k"},
-          {"/scratch/02875/docking/test/benchmarks/ZINC-fragments/5000_set": "ZINC-fragments 5k"},
-          {"/scratch/02875/docking/test/benchmarks/ZINC-fragments/10000_set": "ZINC-fragments 10k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-HTSC/5000_set": "HTSC 5k"},
-          {"/scratch/02875/docking/test/benchmarks/Enamine-HTSC/10000_set": "HTSC 10k"},
-
-          {"/scratch/projects/docking/Test-set": "Test-set"},
+          {"/scratch/projects/docking/Test-set-compressed": "Test-set"},
           {"/scratch/projects/docking/Enamine-PC-compressed": "Enamine-PC"},
           {"/scratch/projects/docking/Enamine-AC-compressed": "Enamine-AC"},
           {"/scratch/projects/docking/Enamine-HTSC-compressed": "Enamine-HTSC"},
           {"/scratch/projects/docking/ZINC-fragments-compressed": "ZINC-fragments"},
-          {"/scratch/projects/docking/ZINC-in-trials-compressed": "ZINC-in-trials"}
-          
+          {"/scratch/projects/docking/ZINC-in-trials-compressed": "ZINC-in-trials"}      
         ],
         "type": "enumeration",
         "visible": true,
@@ -129,7 +111,7 @@
     {
       "id": "size_x",
       "value": {
-        "default": 30,    
+        "default":20,    
         "type": "number",
         "visible": true,
         "required": true,
@@ -143,7 +125,7 @@
     {
       "id": "size_y",
       "value": {
-        "default": 30,
+        "default": 20,
         "type": "number",
         "visible": true,
         "required": true,
@@ -157,7 +139,7 @@
     {  
       "id": "size_z",
       "value": {
-        "default": 30,
+        "default": 20,
         "type": "number",
         "visible": true,
         "required": true,
