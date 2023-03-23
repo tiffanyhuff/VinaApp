@@ -18,7 +18,9 @@
   "templatePath": "runner.sh",
   "testPath": "tester.sh",
   "version": "{{ app.version }}",
-  "defaultMaxRunTime": "02:00:00",
+  "defaultProcessorsPerNode": 32,
+  "defaultMemoryPerNode": "96GB",
+  "defaultMaxRunTime": "48:00:00",
   "inputs": [    
    {
     "id": "receptor",
@@ -28,8 +30,8 @@
       "required": true
     },
     "details": {
-      "label": "Protein File",
-      "description": "Please provide a protein formatted in a .pdb or .pdbqt file."
+      "label": "Protein Receptor Input File",
+      "description": "Upload a protein receptor (.pdb or .pdbqt format)."
     },
     "semantics": {}
   }],
@@ -54,26 +56,26 @@
           {"/scratch/projects/docking/Enamine-AC-compressed": "Enamine-AC"},
           {"/scratch/projects/docking/Enamine-HTSC-compressed": "Enamine-HTSC"},
           {"/scratch/projects/docking/ZINC-fragments-compressed": "ZINC-fragments"},
-          {"/scratch/projects/docking/ZINC-in-trials-compressed": "ZINC-in-trials"}      
+          {"/scratch/projects/docking/ZINC-in-trials-compressed": "ZINC-in-trials"}
         ],
         "type": "enumeration",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 1
       },      
       "details": {
         "label": "Ligand Library",
-        "description": "Please select the ligand database to search against."
+        "description": "Select the ligand database to search against."
       }
     },
     {
       "id": "center_x",
       "value": {
-        "default": 16,
+        "default": 0,
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 2
       },
       "details": {
         "label": "Center X-Coordinate",
@@ -83,11 +85,11 @@
     {  
       "id": "center_y",
       "value": {
-        "default": 52,
+        "default": 0,
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 3
       },
       "details": {
         "label": "Center Y-Coordinate",
@@ -97,28 +99,28 @@
     {
       "id": "center_z",
       "value": {
-        "default": 18,
+        "default": 0,
         "type": "number",
         "visible": true,   
         "required": true,
-        "order": 1000
+        "order": 4
       },
       "details": {
         "label": "Center Z-Coordinate",
         "description": "Enter a z-coordinate to designate the center of the search volume."
       }
-      },
+    },
     {
       "id": "size_x",
       "value": {
-        "default":20,    
+        "default": 20,    
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 5
       },
       "details": {
-        "label": "Grid Box X Value",
+        "label": "Grid Box X-Value",
         "description": "Specify, in Angstroms, the size of the box around the active site to search within. Too large a value can lead to inaccurate binding positions outside of the active site. The maximum size is 30 x 30 x 30 Angstroms."
       }
     },
@@ -129,10 +131,10 @@
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 6
       },
       "details": {
-        "label": "Grid Box Y Value",
+        "label": "Grid Box Y-Value",
         "description": "Specify, in Angstroms, the size of the box around the active site to search within."
       }
     },
@@ -143,10 +145,10 @@
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000   
+        "order": 7   
       },
       "details": {
-        "label": "Grid Box Z Value",
+        "label": "Grid Box Z-Value",
         "description": "Specify, in Angstroms, the size of the box around the active site to search within."
       }
     },
@@ -155,17 +157,16 @@
       "value": {
  	      "default": "vina",
         "enumValues":[
-  	      {"vina": "Vina"},
-  	      {"ad4": "AutoDock4"}
+  	      {"vina": "Vina"}
         ],
         "type": "enumeration",
-        "visible": true,
+        "visible": false,
         "required": true,
-        "order": 1000   
+        "order": 8   
       },
       "details": {
         "label": "Scoring Method",
-        "description": "Please select whether molecular docking is run using the AutoDock Vina forcefield or the AutoDock4 forcefield."
+        "description": "Select whether molecular docking is run using the AutoDock Vina forcefield or the AutoDock4 forcefield."
       }
     },
     {
@@ -173,31 +174,30 @@
       "value": {
         "default": "rigid",
         "enumValues":[
-          {"rigid": "Rigid"},
-          {"flexible": "Flexible"}
+          {"rigid": "Rigid"}
         ],
         "type": "enumeration",
-        "visible": true, 
+        "visible": false, 
         "required": true,
-        "order": 1000
+        "order": 9
       },
       "details": {
         "label": "Docking Type",
-        "description": "Please select whether to use rigid or flexible docking methods. If flexible is chosen, please provide the flexible sidechain names below."
+        "description": "Select whether to use rigid or flexible docking methods. If flexible is chosen, please provide the flexible sidechain names below."
       }
     },
     {
       "id": "flexible_sidechains",
       "value": {
-        "default": "ASP444",
+        "default": "",
         "type": "string",
-        "visible": true,
+        "visible": false,
         "required": false,
-        "order": 1000   
+        "order": 10   
       },
       "details": {
         "label": "Flexible Sidechains",
-        "description": "If using flexible docking, please provide the sidechain names with an underscore separating each i.e. ASP363_SER385_TYR393."
+        "description": "If using flexible docking, provide the sidechain names with an underscore separating each (e.g. ASP363_SER385_TYR393)."
       }
     },
     {
@@ -207,11 +207,11 @@
         "type": "number",
         "visible": true,
         "required": true,
-        "order": 1000
+        "order": 11
       },
       "details": {
-        "label": "Docking Scores",
-        "description": "Please provide the number of top docking scores to be returned. The maximum allowed number of scores is 1,000."
+        "label": "Returned Scores",
+        "description": "Provide the number of top scoring docked ligands to be returned (max: 1000)."
       }
     }
   ],
